@@ -1,0 +1,48 @@
+import React, { useState } from "react";
+
+function ValidatedForm() {
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const errs = {};
+    if (!formData.name.trim()) errs.name = "Name is required";
+    if (!formData.email.includes("@")) errs.email = "Email must be valid";
+    return errs;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      alert("Form submitted successfully!");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Name:</label>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        />
+        {errors.name && <span style={{ color: "red" }}>{errors.name}</span>}
+      </div>
+      <div>
+        <label>Email:</label>
+        <input
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        />
+        {errors.email && <span style={{ color: "red" }}>{errors.email}</span>}
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+export default ValidatedForm;
